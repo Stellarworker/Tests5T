@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity(), ViewSearchContract {
         toDetailsActivityButton.setOnClickListener {
             startActivity(DetailsActivity.getIntent(this, totalCount))
         }
+        setButtonListener()
         setQueryListener()
         setRecyclerView()
     }
@@ -44,6 +45,21 @@ class MainActivity : AppCompatActivity(), ViewSearchContract {
     private fun setRecyclerView() {
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
+    }
+
+    private fun setButtonListener() {
+        searchButton.setOnClickListener {
+            val query = searchEditText.text.toString()
+            if (query.isNotBlank()) {
+                presenter.searchGitHub(query)
+            } else {
+                Toast.makeText(
+                    this,
+                    getString(R.string.enter_search_word),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
 
     private fun setQueryListener() {
@@ -115,4 +131,5 @@ class MainActivity : AppCompatActivity(), ViewSearchContract {
         const val BASE_URL = "https://api.github.com"
         const val FAKE = "FAKE"
     }
+
 }
