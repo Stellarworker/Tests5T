@@ -7,6 +7,8 @@ import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.UiScrollable
 import androidx.test.uiautomator.UiSelector
+import com.geekbrains.tests.SETTINGS
+import com.geekbrains.tests.SETTINGS_PACKAGENAME
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -27,8 +29,7 @@ class OpenOtherAppsTest {
         //В нашем случае это примерно снизу экрана строго вверх. Steps указывает, в
         //какое количество шагов мы хотим осуществить смахивание: чем выше число,
         //тем медленнее будет осуществляться свайп
-        uiDevice.swipe(500, 1500, 500, 0, 5)
-
+        //uiDevice.swipe(500, 1500, 500, 0, 5)
         //Для других устройств список установленных приложений может открываться по другому.
         //Часто это иконка на главном экране под названием Apps.
         //Для этого достаточно свернуть все приложения через uiDevice.pressHome() и
@@ -43,7 +44,7 @@ class OpenOtherAppsTest {
         //Приложений, обычно, установлено столько, что кнопка может быть за границей экрана
         //Тогда корневым контейнером будет Scrollable.
         //Если же все приложения умещаются на одном экране, то достаточно установить scrollable(false)
-        val appViews = UiScrollable(UiSelector().scrollable(true))
+        val appViews = UiScrollable(UiSelector().scrollable(false))
         //Если прокрутка горизонтальная (встречается на старых устройствах), нужно установить
         // горизонтальную прокрутку (по умолчанию она вертикальная)
         //appViews.setAsHorizontalList()
@@ -53,14 +54,14 @@ class OpenOtherAppsTest {
             .getChildByText(
                 UiSelector()
                     .className(TextView::class.java.name),
-                "Settings"
+                SETTINGS
             )
         //Открываем
         settingsApp.clickAndWaitForNewWindow()
 
         //Убеждаемся, что Настройки открыты
         val settingsValidation =
-            uiDevice.findObject(UiSelector().packageName("com.android.settings"))
+            uiDevice.findObject(UiSelector().packageName(SETTINGS_PACKAGENAME))
         Assert.assertTrue(settingsValidation.exists())
     }
 }
